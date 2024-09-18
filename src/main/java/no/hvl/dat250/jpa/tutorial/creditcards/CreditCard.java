@@ -12,10 +12,12 @@ public class CreditCard {
     private Integer creditLimit;
     private Integer balance;
 
-    @ManyToOne()
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name="bank_id")
     private Bank bank;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name="pincode_id")
     private Pincode pincode;
 
     public CreditCard() {}
@@ -41,7 +43,15 @@ public class CreditCard {
         return pincode;
     }
 
+    public void setPincode(Pincode pincode) {
+        this.pincode = pincode;
+    }
+
     public Bank getOwningBank() {
         return bank;
+    }
+
+    public void setOwningBank(Bank bank) {
+        this.bank = bank;
     }
 }

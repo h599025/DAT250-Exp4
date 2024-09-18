@@ -5,11 +5,10 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import jakarta.persistence.Query;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 public class JpaTest {
@@ -17,7 +16,7 @@ public class JpaTest {
     private static final String PERSISTENCE_UNIT_NAME = "jpa-tutorial";
     private EntityManagerFactory factory;
 
-    @BeforeEach
+    @Before
     public void setUp() {
         factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
         EntityManager em = factory.createEntityManager();
@@ -89,7 +88,7 @@ public class JpaTest {
         em.close();
     }
 
-    @Test()
+    @Test(expected = jakarta.persistence.NoResultException.class)
     public void deletePerson() {
         EntityManager em = factory.createEntityManager();
         // Begin a new local transaction so that we can persist a new entity
@@ -102,10 +101,7 @@ public class JpaTest {
         em.remove(user);
         em.getTransaction().commit();
 
-        // Check that NoResultException is thrown when no matching person is found
-        assertThrows(jakarta.persistence.NoResultException.class, () -> {
-            Person person = (Person) q.getSingleResult();
-        });
+        Person person = (Person) q.getSingleResult();
 
         em.close();
     }

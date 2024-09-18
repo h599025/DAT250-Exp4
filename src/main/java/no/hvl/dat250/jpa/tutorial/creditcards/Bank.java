@@ -2,6 +2,8 @@ package no.hvl.dat250.jpa.tutorial.creditcards;
 
 import jakarta.persistence.*;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Bank {
@@ -10,8 +12,8 @@ public class Bank {
     private Long id;
     private String name;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    private Collection<CreditCard> creditCards;
+    @OneToMany(mappedBy = "bank")
+    private Set<CreditCard> creditCards = new HashSet<>();
 
     public Bank() {}
     public Bank(String name) {
@@ -26,7 +28,7 @@ public class Bank {
         return name;
     }
 
-    public Collection<CreditCard> getOwnedCards() {
+    public Set<CreditCard> getOwnedCards() {
         return creditCards;
     }
 }
